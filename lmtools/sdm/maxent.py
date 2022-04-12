@@ -1,11 +1,13 @@
 """Module containing MaxEnt constants."""
 import os
 import subprocess
+from time import sleep
 
 
 # .....................................................................................
 JAVA_CMD = os.environ['JAVA_CMD']
 JAVA_OPTS = os.environ['JAVA_OPTIONS']
+MAXENT_JAR = os.environ['MAXENT_JAR']
 MAXENT_MODEL_TOOL = 'density.MaxEnt'
 MAXENT_PROJECT_TOOL = 'density.Project'
 MAXENT_CONVERT_TOOL = 'density.Convert'
@@ -26,7 +28,7 @@ def create_maxent_model(
         [
             JAVA_CMD,
             JAVA_OPTS,
-            ME_CMD,
+            MAXENT_JAR,
             MAXENT_MODEL_TOOL,
             f'-s {points_filename}',
             f'-o {work_dir}',

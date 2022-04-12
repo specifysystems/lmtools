@@ -64,7 +64,7 @@ def cli():
     if args.maxent_params is not None:
         model_params['maxent_arguments'] = args.maxent_params
 
-    create_sdm(
+    model_raster_filename, report = create_sdm(
         args.min_points,
         args.points_filename,
         args.env_dir,
