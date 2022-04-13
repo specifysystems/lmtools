@@ -5,8 +5,14 @@ from time import sleep
 
 
 # .....................................................................................
-JAVA_CMD = os.environ['JAVA_CMD']
-JAVA_OPTS = os.environ['JAVA_OPTIONS']
+try:
+    JAVA_CMD = os.environ['JAVA_CMD']
+except KeyError:
+    JAVA_CMD = 'java'
+try:
+    JAVA_OPTS = os.environ['JAVA_OPTIONS']
+except KeyError:
+    JAVA_OPTS = ''
 MAXENT_JAR = os.environ['MAXENT_JAR']
 MAXENT_MODEL_TOOL = 'density.MaxEnt'
 MAXENT_PROJECT_TOOL = 'density.Project'

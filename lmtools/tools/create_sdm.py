@@ -1,5 +1,7 @@
 """Create an SDM using a method determined by the data."""
 import argparse
+import json
+import os
 
 from lmtools.sdm.maxent import DEFAULT_MAXENT_OPTIONS
 from lmtools.sdm.model import create_sdm
@@ -17,7 +19,10 @@ def cli():
         help='Minimum number of points to use Maxent.',
     )
     parser.add_argument(
-        '-m',
+        '-m', '--mask', type=str, help='Mask raster (one will be created otherwise).'
+    )
+    parser.add_argument(
+        '-p',
         '--maxent_params',
         type=str,
         help=f'Extra options to send to Maxent (added to {DEFAULT_MAXENT_OPTIONS}.',
@@ -40,6 +45,15 @@ def cli():
         default='y',
         help='Header of CSV column containing Y value for record.'
     )
+    parser.add_argument(
+        '-r',
+        '--report',
+        type=str,
+        help='File location to write out reporting information.'
+    )
+    parser.add_argument(
+        '-z', '--package_filename', type=str, help='Output package zip file.'
+    )
 
     parser.add_argument(
         'points_filename',
@@ -55,6 +69,11 @@ def cli():
         'ecoregions_filename', type=str, help='Ecoregions raster filename.'
     )
     parser.add_argument('work_dir', type=str, help='Directory where work can be done.')
+    parser.add_argument(
+        'model_raster_filename',
+        type=str,
+        help='File location to write final model raster.'
+    )
     args = parser.parse_args()
     model_params = {
         'sp_key': args.species_key,
@@ -72,6 +91,14 @@ def cli():
         args.work_dir,
         **model_params
     )
+
+    # Move model raster
+    os.copy(model_raster_filename, args.model_raster_filename)
+
+    # Conditionally write report file
+    if args.report is not None:
+        with open(args.report, mode='wt') as out_json:
+            json.dump(report, out_json)
 
 
 # .....................................................................................
