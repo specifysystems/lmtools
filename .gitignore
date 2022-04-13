@@ -86,3 +86,6 @@ venv.bak/
 # Let's Encrypt
 privkey.pem
 fullchain.pem
+
+# PyDev
+.project
