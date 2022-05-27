@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Setup module for BiotaPhyPy."""
+"""Setup module for lmtools."""
 from setuptools import setup, find_packages
 import versioneer
 
@@ -22,6 +22,6 @@ setup(
     license=license,
     packages=find_packages(exclude=('tests',)),
     install_requires=[
-        'specify-lmpy>=3.1.1',
+        'specify-lmpy>=3.1.19',
     ]
 )
