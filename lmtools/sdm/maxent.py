@@ -35,12 +35,9 @@ def create_maxent_model(
             '-cp',
             MAXENT_JAR,
             MAXENT_MODEL_TOOL,
-            '-s',
-            points_filename,
-            '-o',
-            work_dir,
-            '-e',
-            layer_dir,
+            f'samplesfile={points_filename}',
+            f'outputdirectory={work_dir}',
+            f'environmentallayers={layer_dir}',
         ]
     model_command.extend(maxent_arguments.split(' '))
     subprocess.run(model_command, capture_output=True, check=True)
