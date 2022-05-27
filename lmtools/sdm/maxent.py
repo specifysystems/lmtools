@@ -34,7 +34,7 @@ def create_maxent_model(
             JAVA_OPTS,
             '-cp',
             MAXENT_JAR,
-            MAXENT_MODEL_TOOL,
+            # MAXENT_MODEL_TOOL,
             f'samplesfile={points_filename}',
             f'outputdirectory={work_dir}',
             f'environmentallayers={layer_dir}',
