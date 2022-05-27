@@ -1,7 +1,6 @@
 """Module containing MaxEnt constants."""
 import os
 import subprocess
-from time import sleep
 
 
 # .....................................................................................
@@ -42,11 +41,4 @@ def create_maxent_model(
             maxent_arguments
         ]
     )
-    model_proc = subprocess.Popen(
-        model_command,
-        shell=True,
-        stderr=subprocess.PIPE,
-        preexec_fn=os.setsid
-    )
-    while model_proc.poll() is None:
-        sleep(10)
+    subprocess.run(model_command)
