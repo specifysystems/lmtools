@@ -53,6 +53,7 @@ def create_sdm(
         # Create model env layer directory in work dir
         work_env_dir = os.path.join(work_dir, 'model_layers')
         sym_link_env(env_dir, work_env_dir)
+        model_raster_filename = os.path.join(work_dir, f'{species_name}.asc')
 
         if create_mask:
             create_rare_species_model(
