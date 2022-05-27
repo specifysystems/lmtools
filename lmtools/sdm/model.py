@@ -2,7 +2,7 @@
 import glob
 import os
 
-from lmpy.point import PointCsvWriter
+from lmpy.point import Point, PointCsvWriter
 from lmpy.tools.create_rare_species_model import (
     create_rare_species_model,
     read_points,
@@ -39,16 +39,15 @@ def create_sdm(
     create_mask=True,
 ):
     """Entry point method for creating an SDM."""
-    points = read_points(csv_filename, sp_key, x_key, y_key)
+    point_tuples = read_points(csv_filename, sp_key, x_key, y_key)
+    species_name = 'species'
     report = {
-        'num_points': len(points)
+        'num_points': len(point_tuples)
     }
 
-    if len(points) < min_points:
-        model_raster_filename = os.path.join(
-            work_dir, '{}.tif'.format(points[0].species_name)
-        )
-        create_rare_species_model(points, ecoregions_filename, model_raster_filename)
+    if len(point_tuples) < min_points:
+        model_raster_filename = os.path.join(work_dir, f'{species_name}.tif')
+        create_rare_species_model(point_tuples, ecoregions_filename, model_raster_filename)
         report['method'] = 'rare_species_model'
     else:
         # Create model env layer directory in work dir
@@ -57,7 +56,7 @@ def create_sdm(
 
         if create_mask:
             create_rare_species_model(
-                points, ecoregions_filename, os.path.join(work_env_dir, 'mask.asc')
+                point_tuples, ecoregions_filename, os.path.join(work_env_dir, 'mask.asc')
             )
             maxent_arguments += ' togglelayertype=mask'
 
@@ -65,7 +64,7 @@ def create_sdm(
 
         me_csv_filename = os.path.join(work_dir, 'species_points.csv')
         with PointCsvWriter(me_csv_filename, ['species_name', 'x', 'y']) as writer:
-            writer.write_points(points)
+            writer.write_points([Point(species_name, x, y) for x, y in point_tuples])
         create_maxent_model(me_csv_filename, work_env_dir, work_dir, maxent_arguments)
         report['method'] = 'maxent'
 
