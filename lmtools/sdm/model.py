@@ -22,7 +22,22 @@ def sym_link_env(in_dir, out_dir):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     for fn in glob.glob(f'{in_dir}/*'):
-        os.symlink(fn, os.path.join(out_dir, os.path.basename(fn)))
+        os.symlink(os.path.abspath(fn), os.path.join(out_dir, os.path.basename(fn)))
+
+
+# .....................................................................................
+def match_headers(mask_filename, tmp_mask_filename, template_layer_filename):
+    """Match headers with template layer."""
+    with open(mask_filename, mode='wt') as mask_out:
+        with open(template_layer_filename, mode='rt') as template_in:
+            line = next(template_in)
+            while line[0] not in '-0123456789':
+                mask_out.write(line)
+                line = next(template_in)
+        with open(tmp_mask_filename, mode='rt') as tmp_mask_in:
+            for line in tmp_mask_in:
+                if line[0] in '-0123456789':
+                    mask_out.write(line)
 
 
 # .....................................................................................
@@ -56,10 +71,18 @@ def create_sdm(
         model_raster_filename = os.path.join(work_dir, f'{species_name}.asc')
 
         if create_mask:
+            mask_filename = os.path.join(work_env_dir, 'mask.asc')
+            tmp_mask_filename = mask_filename + '.tmp'
             create_rare_species_model(
                 point_tuples,
                 ecoregions_filename,
-                os.path.join(work_env_dir, 'mask.asc')
+                tmp_mask_filename
+            )
+            # Copy headers from one of the environment layers so that they match
+            match_headers(
+                mask_filename,
+                tmp_mask_filename,
+                glob.glob(os.path.join(env_dir, '*.asc'))[0]
             )
             maxent_arguments += ' togglelayertype=mask'
 
