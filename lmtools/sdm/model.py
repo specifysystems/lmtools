@@ -72,7 +72,7 @@ def create_sdm(
 
         if create_mask:
             mask_filename = os.path.join(work_env_dir, 'mask.asc')
-            tmp_mask_filename = mask_filename + '.tmp'
+            tmp_mask_filename = os.path.join(work_dir, 'tmp_mask.asc')
             create_rare_species_model(
                 point_tuples,
                 ecoregions_filename,
