@@ -57,7 +57,9 @@ def create_sdm(
 
         if create_mask:
             create_rare_species_model(
-                point_tuples, ecoregions_filename, os.path.join(work_env_dir, 'mask.asc')
+                point_tuples,
+                ecoregions_filename,
+                os.path.join(work_env_dir, 'mask.asc')
             )
             maxent_arguments += ' togglelayertype=mask'
 
@@ -68,7 +70,5 @@ def create_sdm(
             writer.write_points([Point(species_name, x, y) for x, y in point_tuples])
         create_maxent_model(me_csv_filename, work_env_dir, work_dir, maxent_arguments)
         report['method'] = 'maxent'
-        print(glob.glob(os.path.join(work_dir, '*.asc')))
-        model_raster_filename = glob.glob(os.path.join(work_dir, '*.asc'))
 
     return model_raster_filename, report
