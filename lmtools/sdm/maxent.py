@@ -29,18 +29,21 @@ def create_maxent_model(
     maxent_arguments=DEFAULT_MAXENT_OPTIONS
 ):
     """Run Maxent."""
-    model_command = [
-        JAVA_CMD,
-        JAVA_OPTS,
-        '-cp',
-        MAXENT_JAR,
-        MAXENT_MODEL_TOOL,
-        f'samplesfile={points_filename}',
-        '-e',
-        layer_dir,
-        '-o',
-        work_dir
-    ]
+    model_command = [JAVA_CMD]
+    if len(JAVA_OPTS) > 0:
+        model_command.append(JAVA_OPTS)
+    model_command.extend(
+        [
+            '-cp',
+            MAXENT_JAR,
+            MAXENT_MODEL_TOOL,
+            f'samplesfile={points_filename}',
+            '-e',
+            layer_dir,
+            '-o',
+            work_dir
+        ]
+    )
 
     model_command.extend(maxent_arguments.split(' '))
     subprocess.run(model_command, capture_output=True, check=True)
