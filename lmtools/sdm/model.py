@@ -30,13 +30,13 @@ def match_headers(mask_filename, tmp_mask_filename, template_layer_filename):
     """Match headers with template layer."""
     with open(mask_filename, mode='wt') as mask_out:
         with open(template_layer_filename, mode='rt') as template_in:
-            line = next(template_in)
-            while line[0] not in '-0123456789':
-                mask_out.write(line)
-                line = next(template_in)
+            for _ in range(6):
+                mask_out.write(next(template_in))
         with open(tmp_mask_filename, mode='rt') as tmp_mask_in:
+            i = 0
             for line in tmp_mask_in:
-                if line[0] in '-0123456789':
+                i += 1
+                if i > 6:
                     mask_out.write(line)
 
 
