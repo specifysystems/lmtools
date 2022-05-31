@@ -1,6 +1,7 @@
 """Create an SDM using a method determined by the data."""
 import argparse
 import json
+import os
 import shutil
 
 from lmtools.sdm.maxent import DEFAULT_MAXENT_OPTIONS
@@ -93,6 +94,9 @@ def cli():
     )
 
     # Move model raster
+    model_dir = os.path.dirname(args.model_raster_filename)
+    if not os.path.exists(model_dir):
+        os.makedirs(model_dir)
     shutil.copy(model_raster_filename, args.model_raster_filename)
 
     # Conditionally write report file
