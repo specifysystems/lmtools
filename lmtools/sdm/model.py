@@ -61,6 +61,8 @@ def create_sdm(
     }
 
     if len(point_tuples) < min_points:
+        if not os.path.exists(work_dir):
+            os.mkdir(work_dir)
         model_raster_filename = os.path.join(work_dir, f'{species_name}.tif')
         create_rare_species_model(point_tuples, ecoregions_filename, model_raster_filename)
         report['method'] = 'rare_species_model'
