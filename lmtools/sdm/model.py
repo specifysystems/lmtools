@@ -55,7 +55,7 @@ def create_sdm(
 ):
     """Entry point method for creating an SDM."""
     point_tuples = read_points(csv_filename, sp_key, x_key, y_key)
-    species_name = 'species'
+    species_name = 'Species'
     report = {
         'num_points': len(point_tuples)
     }
